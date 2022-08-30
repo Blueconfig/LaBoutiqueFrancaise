@@ -15,7 +15,7 @@
             <p>
                 {{ product.description|raw }}
             </p>
-            <a href="" class="btn btn-primary">Ajouter au panier</a>
+            <a href="{{ path('app_cart_add', { 'id' : product.id }) }}" class="btn btn-primary">Ajouter au panier</a>
 {#            {{ path('add_to_cart', { 'id' : product.id }) }}#}
         </div>
     </div>
