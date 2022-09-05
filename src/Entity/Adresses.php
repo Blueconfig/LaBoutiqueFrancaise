@@ -38,6 +38,10 @@ class Adresses
     #[ORM\Column(length: 25, nullable: true)]
     private ?string $phone = null;
 
+    public function __toString(){
+        return $this->getName().'[br]'.$this->getAdress().'[br]'.$this->getPostal().'[br]'.$this->getCity();
+    }
+
     public function getId(): ?int
     {
         return $this->id;

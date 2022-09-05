@@ -18,6 +18,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?int $id = null;
 
+
     #[ORM\Column(length: 180, unique: true)]
     private ?string $email = null;
 
@@ -36,12 +37,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 100)]
     private ?string $lastname = null;
 
+    private ?string $fullname;
+
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Adresses::class)]
     private Collection $adresses;
+
+    #[ORM\OneToMany(mappedBy: 'relation', targetEntity: Order::class)]
+    private Collection $orders;
 
     public function __construct()
     {
         $this->adresses = new ArrayCollection();
+        $this->orders = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -113,6 +120,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
     }
+    public function getFullname(): ?string
+    {
+        return $this->firstname . ' ' . $this->lastname;
+    }
 
     public function getFirstname(): ?string
     {
@@ -162,6 +173,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($adress->getUser() === $this) {
                 $adress->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Order>
+     */
+    public function getOrders(): Collection
+    {
+        return $this->orders;
+    }
+
+    public function addOrder(Order $order): self
+    {
+        if (!$this->orders->contains($order)) {
+            $this->orders->add($order);
+            $order->setRelation($this);
+        }
+
+        return $this;
+    }
+
+    public function removeOrder(Order $order): self
+    {
+        if ($this->orders->removeElement($order)) {
+            // set the owning side to null (unless already changed)
+            if ($order->getRelation() === $this) {
+                $order->setRelation(null);
             }
         }
 

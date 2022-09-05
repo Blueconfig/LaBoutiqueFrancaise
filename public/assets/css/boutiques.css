@@ -1,26 +1,16 @@
 body {
     position: relative;
 }
+
 .navbar-item-custom, .navbar-item-custom a {
     color: #fff;
-    font-size: 14px;
-    font-weight: 600;
-    text-transform: uppercase;
-    padding: 0 10px;
-    display: inline-block;
-    line-height: 50px;
-    position: relative;
-    transition: all 0.3s ease;
-    -webkit-transition: all 0.3s ease;
-    -moz-transition: all 0.3s ease;
-    -o-transition: all 0.3s ease;
-    -ms-transition: all 0.3s ease;
 }
+
 .footer-custom {
     text-align: center;
     position: absolute;
     width: 100%;
-    background-color: #0d2f71;
+    background-color: #dfeaff;
     padding-top: 25px;
     margin-top: 50px;
 }
@@ -101,4 +91,3 @@ body {
     color: #778ca3;
     text-decoration: none;
 }
-

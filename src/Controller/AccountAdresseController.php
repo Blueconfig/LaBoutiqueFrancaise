@@ -29,12 +29,43 @@ class AccountAdresseController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $address->setUser($this->getUser());
             $adressesRepository->add($address, true);
-            return $this->redirectToRoute('account_address');
+            if ($cart->getCart()) {
+                return $this->redirectToRoute('app_order');
+            } else {
+                return $this->redirectToRoute('account_address');
+            }
         }
 
 
         return $this->render('account/address_form.html.twig', [
             'form' => $form->createView()
         ]);
+    }
+    #[Route('/account/modifier-une-adresse/{id}', name: 'account_address_edit')]
+    public function edit(Request $request, $id, AdressesRepository $adressesRepository)
+    {
+        $address = $adressesRepository->find($id);
+        if (!$address || $address->getUser() != $this->getUser()) {
+            return $this->redirectToRoute('account_address');
+        }
+        $form = $this->createForm(AdresseType::class, $address);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $adressesRepository->add($address, true);
+            return $this->redirectToRoute('account_address');
+        }
+        return $this->render('account/address_form.html.twig', [
+            'form' => $form->createView()
+        ]);
+    }
+    #[Route('/account/supprimer-une-adresse/{id}', name: 'account_address_delete')]
+    public function delete($id, AdressesRepository $adressesRepository)
+    {
+        $address = $adressesRepository->find($id);
+
+        if ($address && $address->getUser() == $this->getUser()) {
+            $adressesRepository->remove($address, true);
+        }
+        return $this->redirectToRoute('account_address');
     }
 }
