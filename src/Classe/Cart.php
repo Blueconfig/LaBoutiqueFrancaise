@@ -36,7 +36,7 @@ class Cart
     public function removeCart()
     {
         $session = $this->requestStack->getSession();
-        return $session->remove('product');
+        return $session->remove('cart');
     }
     public function delete($id)
     {

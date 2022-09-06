@@ -39,13 +39,22 @@ class Order
     #[ORM\Column]
     private ?bool $isPaid = null;
 
+    #[ORM\Column(length: 150)]
+    private ?string $reference = null;
+
+    #[ORM\Column(length: 200, nullable: true)]
+    private ?string $stripeSessionId = null;
+
+    #[ORM\Column]
+    private ?int $state = null;
+
     public function __construct()
     {
         $this->orderDetails = new ArrayCollection();
     }
     public function getTotal()
     {
-        $total = null;
+        $total = 0;
 
         foreach ($this->getOrderDetails()->getValues() as $product) {
             $total = $total + ($product->getPrice() * $product->getQuantity());
@@ -158,6 +167,42 @@ class Order
     public function setIsPaid(bool $isPaid): self
     {
         $this->isPaid = $isPaid;
+
+        return $this;
+    }
+
+    public function getReference(): ?string
+    {
+        return $this->reference;
+    }
+
+    public function setReference(string $reference): self
+    {
+        $this->reference = $reference;
+
+        return $this;
+    }
+
+    public function getStripeSessionId(): ?string
+    {
+        return $this->stripeSessionId;
+    }
+
+    public function setStripeSessionId(?string $stripeSessionId): self
+    {
+        $this->stripeSessionId = $stripeSessionId;
+
+        return $this;
+    }
+
+    public function getState(): ?int
+    {
+        return $this->state;
+    }
+
+    public function setState(int $state): self
+    {
+        $this->state = $state;
 
         return $this;
     }

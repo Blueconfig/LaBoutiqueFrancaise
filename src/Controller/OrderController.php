@@ -8,8 +8,7 @@ use App\Entity\OrderDetails;
 use App\Form\OrderType;
 use App\Repository\OrderDetailsRepository;
 use App\Repository\OrderRepository;
-use Stripe\Checkout\Session;
-use Stripe\Stripe;
+
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -66,12 +65,14 @@ class OrderController extends AbstractController
 
             $order = new Order();
             $reference = $date->format('dmY') . '-' . uniqid();
+            $order->setReference($reference);
             $order->setCreatedAt($date);
             $order->setRelation($this->getUser());
             $order->setCarrierName($carriers->getName());
             $order->setCarrierPrice($carriers->getPrice());
             $order->setDelivery($delivery_content);
             $order->setIsPaid(0);
+            $order->setState(0);
             $orderRepository->add($order, true);
             $YOUR_DOMAIN = 'http://localhost:8000';
             $product_for_stripe = [];
@@ -97,24 +98,14 @@ class OrderController extends AbstractController
                 ];
             }
 
-            Stripe::setApiKey('sk_test_0LqdeJbNCEiQIWYn3Ccdfs7X00fvRWlYyy');
-            $YOUR_DOMAIN = 'http://localhost:8000';
-            $checkout_session = \Stripe\Checkout\Session::create([
-                'payment_method_types' => ['card'],
-                'line_items' => [
-                    $product_for_stripe
-                ],
-                'mode' => 'payment',
-                'success_url' => $YOUR_DOMAIN . '/success.html',
-                'cancel_url' => $YOUR_DOMAIN . '/cancel.html',
-            ]);
+
 
 
             return $this->render('order/add.html.twig', [
                 'cart' => $cart->getFull(),
                 'carrier' => $carriers,
                 'delivery' => $delivery_content,
-                'stripe_checkout_session' => $checkout_session->id
+                'reference' => $order->getReference(),
             ]);
         }
         return $this->redirectToRoute('app_cart');
