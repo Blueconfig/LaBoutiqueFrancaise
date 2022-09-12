@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Entity\Blog\BlogArticle;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -45,10 +46,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'relation', targetEntity: Order::class)]
     private Collection $orders;
 
+    #[ORM\OneToMany(mappedBy: 'editor', targetEntity: BlogArticle::class)]
+    private Collection $blogArticles;
+
     public function __construct()
     {
         $this->adresses = new ArrayCollection();
         $this->orders = new ArrayCollection();
+        $this->blogArticles = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -203,6 +208,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($order->getRelation() === $this) {
                 $order->setRelation(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, BlogArticle>
+     */
+    public function getBlogArticles(): Collection
+    {
+        return $this->blogArticles;
+    }
+
+    public function addBlogArticle(BlogArticle $blogArticle): self
+    {
+        if (!$this->blogArticles->contains($blogArticle)) {
+            $this->blogArticles->add($blogArticle);
+            $blogArticle->setEditor($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBlogArticle(BlogArticle $blogArticle): self
+    {
+        if ($this->blogArticles->removeElement($blogArticle)) {
+            // set the owning side to null (unless already changed)
+            if ($blogArticle->getEditor() === $this) {
+                $blogArticle->setEditor(null);
             }
         }
 

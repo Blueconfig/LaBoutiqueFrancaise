@@ -2,6 +2,8 @@
 
 namespace App\Controller\Admin;
 
+use App\Entity\Blog\BlogArticle;
+use App\Entity\Blog\BlogCategorie;
 use App\Entity\Carrier;
 use App\Entity\Categories;
 use App\Entity\Order;
@@ -55,5 +57,7 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToCrud('Categories', 'fas fa-list', Categories::class);
         yield MenuItem::linkToCrud('Produits', 'fas fa-barcode', Product::class);
         yield MenuItem::linkToCrud('Carriers', 'fas fa-truck', Carrier::class);
+        yield MenuItem::linkToCrud('Articles', 'fas fa-truck', BlogArticle::class);
+        yield MenuItem::linkToCrud('Catégorie Articles', 'fas fa-truck', BlogCategorie::class);
     }
 }
