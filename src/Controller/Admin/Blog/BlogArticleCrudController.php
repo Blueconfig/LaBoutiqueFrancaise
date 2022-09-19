@@ -7,6 +7,7 @@ use App\Entity\Blog\BlogCategorie;
 use App\Entity\Categories;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\SlugField;
@@ -37,6 +38,7 @@ class BlogArticleCrudController extends AbstractCrudController
             TextEditorField::new('content'),
             AssociationField::new('categories'),
             CollectionField::new('images')->useEntryCrudForm(),
+            BooleanField::new('etat')->setLabel('Publier'),
         ];
     }
 

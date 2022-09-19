@@ -44,10 +44,14 @@ class BlogArticle
     #[ORM\Column(nullable: true)]
     private ?bool $etat = null;
 
+    #[ORM\OneToMany(mappedBy: 'article', targetEntity: BlogCommentaire::class)]
+    private Collection $blogCommentaires;
+
     public function __construct()
     {
         $this->images = new ArrayCollection();
         $this->categories = new ArrayCollection();
+        $this->blogCommentaires = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -189,6 +193,36 @@ class BlogArticle
     public function setEtat(?bool $etat): self
     {
         $this->etat = $etat;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, BlogCommentaire>
+     */
+    public function getBlogCommentaires(): Collection
+    {
+        return $this->blogCommentaires;
+    }
+
+    public function addBlogCommentaire(BlogCommentaire $blogCommentaire): self
+    {
+        if (!$this->blogCommentaires->contains($blogCommentaire)) {
+            $this->blogCommentaires->add($blogCommentaire);
+            $blogCommentaire->setArticle($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBlogCommentaire(BlogCommentaire $blogCommentaire): self
+    {
+        if ($this->blogCommentaires->removeElement($blogCommentaire)) {
+            // set the owning side to null (unless already changed)
+            if ($blogCommentaire->getArticle() === $this) {
+                $blogCommentaire->setArticle(null);
+            }
+        }
 
         return $this;
     }

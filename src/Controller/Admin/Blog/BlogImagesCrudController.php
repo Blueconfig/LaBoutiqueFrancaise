@@ -24,7 +24,8 @@ class BlogImagesCrudController extends AbstractCrudController
                 ->setBasePath('articles/')
                 ->setUploadDir('public/articles')
                 ->setUploadedFileNamePattern('[randomhash].[extension]')
-                ->setRequired(false),
+                ->setRequired(false)
+                ->setHelp('Taille recommandée : 800x600px'),
 
         ];
     }

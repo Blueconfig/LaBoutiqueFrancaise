@@ -1,0 +1,142 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}BlogArticle index{% endblock %}
+
+{% block body %}
+    <style>
+        .widget {
+            border: none;
+            box-shadow: 0 2px 0 rgba(0, 0, 0, .07);
+            -webkit-border-radius: 5px;
+            -moz-border-radius: 5px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            position: relative;
+            background: #fff;
+            padding: 20px;
+            display: block;
+        }
+
+        .widget-blog-cover {
+            overflow: hidden;
+            padding-top: 60%;
+        }
+
+        .widget-blog-cover, .widget-stat-header {
+            position: relative;
+            border-radius: 5px 5px 0 0;
+            margin: -20px -20px 20px;
+        }
+
+        .animation-grow-hover, .widget-blog .widget-blog-cover img {
+            transition: all .5s ease-in-out;
+        }
+
+        .widget-blog-cover img:hover {
+            max-width: 110%;
+            min-height: 110%;
+            margin-left: -5%;
+            margin-top: -5%;
+            animation: 1s ease-in-out 5s normal none infinite running pulse;
+        }
+
+        .widget-blog-cover img {
+            position: absolute;
+            left: 0;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            max-width: 100%;
+            min-height: 100%;
+        }
+
+        .widget-blog-author {
+            margin: -20px -20px 0;
+            padding: 10px 20px;
+        }
+
+        .widget-blog-author-image {
+            float: left;
+            margin-top: -30px;
+            padding: 5px;
+            border-radius: 70px;
+            width: 70px;
+            height: 70px;
+            background: #fff;
+            position: relative;
+        }
+
+        .widget-blog-author-image img {
+            max-width: 100%;
+            border-radius: 70px;
+        }
+
+        .text-muted {
+            color: #aab3ba;
+        }
+
+        .f-s-11 {
+            font-size: 11px !important;
+        }
+
+        .m-0 {
+            margin: 0 !important;
+        }
+    </style>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8">
+                {% for blog_article in blog_articles %}
+                    <div class="widget widget-blog">
+                        <div class="widget-blog-cover">
+                            <div style="">
+                                <img src="{{ asset('articles/'~ blog_article.images[0].file ) }}" alt="">
+                            </div>
+
+                        </div>
+                        <div class="widget-blog-author">
+                            <div class="widget-blog-author-image">
+                                <img src="https://bootdey.com/img/Content/user_1.jpg" alt="">
+                            </div>
+                            <div class="widget-blog-author-info">
+                                <h5 class="m-t-0 m-b-1">Serhiy Navin</h5>
+                                <p class="text-muted m-0 f-s-11">Front End Designer</p>
+                            </div>
+                        </div>
+                        <div class="widget-blog-content">
+                            <h5>{{ blog_article.title }}</h5>
+                            <p>
+                                {{ shortstr(blog_article.content|raw, 250) }}
+                            </p>
+                            <a href="{{ path('app_public_blog_blog_article_show', {'slug': blog_article.slug}) }}" class="btn btn-sm btn-inverse">Lire l'article</a>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="col-md-4">
+
+            </div>
+        </div>
+    </div>
+    {#        {% for blog_article in blog_articles %} #}
+    {#            <tr> #}
+    {#                <td>{{ blog_article.id }}</td> #}
+    {#                <td>{{ blog_article.title }}</td> #}
+    {#                <td>{{ blog_article.slug }}</td> #}
+    {#                <td>{{ blog_article.content }}</td> #}
+    {#                <td>{{ blog_article.createdAt ? blog_article.createdAt|date('Y-m-d H:i:s') : '' }}</td> #}
+    {#                <td>{{ blog_article.updatedAt ? blog_article.updatedAt|date('Y-m-d H:i:s') : '' }}</td> #}
+    {#                <td>{{ blog_article.etat ? 'Yes' : 'No' }}</td> #}
+    {#                <td> #}
+    {#                    <a href="{{ path('app_public_blog_blog_article_show', {'id': blog_article.id}) }}">show</a> #}
+    {#                </td> #}
+    {#            </tr> #}
+    {#        {% else %} #}
+    {#            <tr> #}
+    {#                <td colspan="8">no records found</td> #}
+    {#            </tr> #}
+    {#        {% endfor %} #}
+
+
+
+{% endblock %}

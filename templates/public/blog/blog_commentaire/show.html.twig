@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}BlogCommentaire{% endblock %}
+
+{% block body %}
+    <h1>BlogCommentaire</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ blog_commentaire.id }}</td>
+            </tr>
+            <tr>
+                <th>Name</th>
+                <td>{{ blog_commentaire.name }}</td>
+            </tr>
+            <tr>
+                <th>Email</th>
+                <td>{{ blog_commentaire.email }}</td>
+            </tr>
+            <tr>
+                <th>Commentaire</th>
+                <td>{{ blog_commentaire.commentaire }}</td>
+            </tr>
+            <tr>
+                <th>CreatedAt</th>
+                <td>{{ blog_commentaire.createdAt ? blog_commentaire.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>UpdatedAt</th>
+                <td>{{ blog_commentaire.updatedAt ? blog_commentaire.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Etat</th>
+                <td>{{ blog_commentaire.etat ? 'Yes' : 'No' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_public_blog_blog_commentaire_index') }}">back to list</a>
+
+    <a href="{{ path('app_public_blog_blog_commentaire_edit', {'id': blog_commentaire.id}) }}">edit</a>
+
+    {{ include('public/blog/blog_commentaire/_delete_form.html.twig') }}
+{% endblock %}
